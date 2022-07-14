@@ -6,6 +6,7 @@ import express from "express";
 import { Controller } from "./util/rest/controller";
 import RequestWithUser from "./util/rest/request";
 import cors = require("cors");
+import errorMiddleware from "./middleware/errorMiddleware";
 /**
  * Express application wrapper class to centralize initialization
  */
@@ -21,6 +22,7 @@ class App extends EventEmitter {
 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this.initializeErrorHandling()
   }
 
   /**
@@ -54,6 +56,10 @@ class App extends EventEmitter {
       request.startTime = Date.now();
       next();
     });
+    this.app.use((request: RequestWithUser, response: express.Response, next: express.NextFunction) => {
+      console.log(request)
+      next();
+    });
   } 
 
   /**
@@ -64,6 +70,9 @@ class App extends EventEmitter {
     controllers.forEach((controller) => {
       this.app.use("/", controller.router);
     });
+  }
+  private initializeErrorHandling(){
+    this.app.use(errorMiddleware)
   }
 
 }
