@@ -7,9 +7,8 @@ import {DepartmentService} from "../service/DepartmentService"
 import { CreateDepartmentDto } from "../dto/createDepartmet";
 import validationMiddleware from "../middleware/postmiddleware";
 import { UpdateDepartmentDto } from "../dto/updateDepartmentDto";
-enum Roles {
-  ADMIN="admin", HR="hr", ENGINEER="engineer", MANAGER="manager",
-}
+import { Roles } from "../constants/Roles";
+
 class DepartmentController extends AbstractController {
   constructor(private departmentService: DepartmentService) {
     super(`${APP_CONSTANTS.apiPrefix}/department`);

@@ -8,9 +8,8 @@ import { CreateEmployeeDto } from "../dto/createEmployee";
 import { CreateEmployeeAddressDto } from "../dto/createEmployeeAddressdto";
 import authorize from "../middleware/Authorize";
 import { UpdateEmployeeDto } from "../dto/updateEmployeeDto";
-enum Roles {
-  ADMIN="admin", HR="hr", ENGINEER="engineer", MANAGER="manager",
-}
+import { Roles } from "../constants/Roles";
+
 class EmployeeController extends AbstractController {
   constructor(private employeeService: EmployeeService) {
     super(`${APP_CONSTANTS.apiPrefix}/employee`);
