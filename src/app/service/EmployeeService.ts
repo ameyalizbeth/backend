@@ -11,6 +11,9 @@ import UserNotAuthorizedException from "../exception/userNotAuthorizedException"
 import IncorrectUsernameOrPasswordException from "../exception/incorrectUsernameOrPasswoedException";
 import jsonwebtoken from 'jsonwebtoken'
 import { EmployeeAddress } from "../entities/EmployeeAddress";
+import { CreateEmployeeDto } from "../dto/createEmployee";
+import { CreateEmployeeAddressDto } from "../dto/createEmployeeAddressdto";
+import { UpdateEmployeeDto } from "../dto/updateEmployeeDto";
 
 export class EmployeeService{
     constructor(private employeerepo:EmployeeRespository){}
@@ -56,7 +59,7 @@ export class EmployeeService{
 //         return await this.employeerepo.createEmployees(emp);
 //     }
 
-public async createEmployees(employeeDetails: any) {
+public async createEmployees(employeeDetails: CreateEmployeeDto) {
     try {
         const newEmployee = plainToClass(Employee, {
             name: employeeDetails.name,
@@ -72,7 +75,7 @@ public async createEmployees(employeeDetails: any) {
     }
 }
 
-public async createEmployeesAddress(employeeDetails: any) {
+public async createEmployeesAddress(employeeDetails: CreateEmployeeAddressDto) {
   try {
     const newAddress = plainToClass(EmployeeAddress, {
       state: employeeDetails.state,
@@ -85,7 +88,8 @@ public async createEmployeesAddress(employeeDetails: any) {
           password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): '',
           age: employeeDetails.age,
           departmentId: employeeDetails.departmentId,
-          employeeaddressId: adress.id
+          employeeaddressId: adress.id,
+          role:employeeDetails.role
            });
       const save = await this.employeerepo.createEmployeesAddress(newEmployee);
       return save;
@@ -101,20 +105,34 @@ public async createEmployeesAddress(employeeDetails: any) {
        return result;
 
     }
-    async updateOneById(emp: ObjectLiteral){
-      const result = await this.employeerepo.updateOneById(emp);
-        if(!result){
-          throw new EntityNotFoundException( ErrorCodes.USER_WITH_ID_NOT_FOUND);
-      }
-     return result;
-
+    async updateOneById(employeeDetails: UpdateEmployeeDto){
+      try {
+        const newEmployee = plainToClass(Employee, {
+          id:employeeDetails.id,
+            name: employeeDetails.name,
+            password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): '',
+            age: employeeDetails.age,
+            departmentId: employeeDetails.departmentId,
+            employeeaddressId: employeeDetails.employeeaddressId
+             });
+            const result = await this.employeerepo.getOneById(newEmployee.id);
+             if(!result){
+               throw new EntityNotFoundException( ErrorCodes.USER_WITH_ID_NOT_FOUND);
+           }
+          
+        const save = await this.employeerepo.updateOneById(newEmployee);
+        return save;
+    } catch (err) {
+        throw new HttpException(400, "Failed to create employee","unauthorized");
+    }
+     
     }
     async removeOneById(id:string){
-        const result = await this.employeerepo.removeOneById(id);
+        const result = await this.employeerepo.getOneById(id);
         if(!result){
           throw new EntityNotFoundException( ErrorCodes.USER_WITH_ID_NOT_FOUND);
       }
-     return result;
+     return await this.employeerepo.removeOneById(result)
 
     }
     

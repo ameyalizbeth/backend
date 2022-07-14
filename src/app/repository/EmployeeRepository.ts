@@ -45,26 +45,22 @@ export class EmployeeRespository{
    
 }
 
-async updateOneById(emp:ObjectLiteral){
+async updateOneById(emp:Employee){
     const employeeRepo = getConnection().getRepository(Employee);
-    const employee = await employeeRepo.findOne({
-        where:{ id: emp.id}
-     })
-    employee.name = emp.name;
-    const employeeNew = await employeeRepo.save(employee)
+    
+
+    const employeeNew = await employeeRepo.save(emp)
 
     return employeeNew
     
    
 }
 
-async removeOneById(id:string){
+async removeOneById(emp:Employee){
     const employeeRepo = getConnection().getRepository(Employee);
-    const employee = await employeeRepo.findOne({
-       where:{ id: id}
-    })
+   
     
-    return await employeeRepo.remove(employee)
+    return await employeeRepo.remove(emp)
 
     
     

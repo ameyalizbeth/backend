@@ -6,6 +6,7 @@ import authorize from "../middleware/Authorize";
 import {DepartmentService} from "../service/DepartmentService"
 import { CreateDepartmentDto } from "../dto/createDepartmet";
 import validationMiddleware from "../middleware/postmiddleware";
+import { UpdateDepartmentDto } from "../dto/updateDepartmentDto";
 enum Roles {
   ADMIN="admin", HR="hr", ENGINEER="engineer", MANAGER="manager",
 }
@@ -19,7 +20,7 @@ class DepartmentController extends AbstractController {
     this.router.get(`${this.path}`,authorize(Object.values(Roles)) ,this.getAllDepartment);
     this.router.get(`${this.path}/:id`,authorize(Object.values(Roles)) ,this.getoneDepartment);
     this.router.post(`${this.path}`,authorize([Roles.ADMIN,Roles.HR]) ,validationMiddleware(CreateDepartmentDto,APP_CONSTANTS.body),this.createDepartment);
-    this.router.put(`${this.path}`,authorize([Roles.ADMIN,Roles.HR]) ,this.updateDepartment);
+    this.router.put(`${this.path}`,authorize([Roles.ADMIN,Roles.HR]) ,validationMiddleware(UpdateDepartmentDto,APP_CONSTANTS.body),this.updateDepartment);
     this.router.delete(`${this.path}/:id`,authorize([Roles.ADMIN,Roles.HR]) ,this.deleteDepartment);
   }
   private getAllDepartment = async (request: RequestWithUser, response: Response, next: NextFunction) => {

@@ -14,9 +14,17 @@ export const ErrorCodes: { [key: string]: CustomError } = {
         CODE: "USER_WITH_ID_NOT_FOUND",
         MESSAGE: "User with given id not found",
     },
+    DEPT_WITH_ID_NOT_FOUND: {
+        CODE: "DEPT_WITH_ID_NOT_FOUND",
+        MESSAGE: "dept_with given id not found",
+    },
     VALIDATION_ERROR: {
         CODE: "VALIDATION_ERROR",
         MESSAGE: "Validation failed error",
+    },
+    FOREIGN_KEY: {
+        CODE: "FOREIGN_KEY_CONSTRAINT",
+        MESSAGE: "foreign keys will affect",
     }
 };
 

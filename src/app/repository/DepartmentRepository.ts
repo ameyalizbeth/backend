@@ -1,5 +1,6 @@
 import { getConnection, ObjectLiteral } from "typeorm";
 import { Department } from "../entities/Department";
+import { Employee } from "../entities/Employee";
 
 export class DepartmentRespository{
     async getAllDepartment(){
@@ -10,24 +11,17 @@ export class DepartmentRespository{
         const departmentRepo = getConnection().getRepository(Department);
        return await departmentRepo.save(dept);
    }
-   async updateDepartment(dep:ObjectLiteral){
+   async updateDepartment(dep:Department){
    
     const departmentRepo = getConnection().getRepository(Department);
-    const dept = await departmentRepo.findOne({
-        where:{ id: dep.id}
-     })
-    
-    dept.dept_name = dep.dept_name;
-    const department = await departmentRepo.save(dept)
+   
+    const department = await departmentRepo.save(dep)
 
     return department
 }
-async deleteDepartment(id:string){
+async deleteDepartment(dept:Department){
     const departmentRepo = getConnection().getRepository(Department);
-    const dept = await departmentRepo.findOne({
-        where:{ id: id}
-     })
-     
+    
      return await departmentRepo.remove(dept)
  
 }
@@ -38,4 +32,11 @@ async getoneDepartment(id:string){
     })
    
     }
+    async getemployeeOfDepartment(id:string){
+        const employeeRepo = getConnection().getRepository(Employee);
+        return await employeeRepo.find({
+            where:{departmentId:id}
+        })
+       
+        }
 }

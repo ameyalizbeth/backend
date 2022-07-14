@@ -7,6 +7,7 @@ import validationMiddleware from "../middleware/postmiddleware";
 import { CreateEmployeeDto } from "../dto/createEmployee";
 import { CreateEmployeeAddressDto } from "../dto/createEmployeeAddressdto";
 import authorize from "../middleware/Authorize";
+import { UpdateEmployeeDto } from "../dto/updateEmployeeDto";
 enum Roles {
   ADMIN="admin", HR="hr", ENGINEER="engineer", MANAGER="manager",
 }
@@ -21,7 +22,7 @@ class EmployeeController extends AbstractController {
     this.router.get(`${this.path}`,authorize(Object.values(Roles)),this.getAllEmployees)
     this.router.post(`${this.path}`,authorize([Roles.ADMIN,Roles.HR]),validationMiddleware(CreateEmployeeDto,APP_CONSTANTS.body), this.createEmployees)
     this.router.post(`${this.path}/address`,authorize([Roles.ADMIN,Roles.HR]),validationMiddleware(CreateEmployeeAddressDto,APP_CONSTANTS.body), this.createEmployeesAddress)
-    this.router.put(`${this.path}`, authorize([Roles.ADMIN,Roles.HR]),this.updateOneById)
+    this.router.put(`${this.path}`, authorize([Roles.ADMIN,Roles.HR]),validationMiddleware(UpdateEmployeeDto,APP_CONSTANTS.body),this.updateOneById)
     this.router.delete(`${this.path}/:id`, authorize([Roles.ADMIN,Roles.HR]),this.removeOneById)
     this.router.post(
       `${this.path}/login`,
