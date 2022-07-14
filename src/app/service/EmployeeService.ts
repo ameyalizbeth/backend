@@ -81,14 +81,14 @@ public async createEmployeesAddress(employeeDetails: CreateEmployeeAddressDto) {
       state: employeeDetails.state,
       district:employeeDetails.district
        });
-       const addressrepo = getConnection().getRepository(EmployeeAddress)
-       const adress = await addressrepo.save(newAddress)
+      //  const addressrepo = getConnection().getRepository(EmployeeAddress)
+      //  const adress = await addressrepo.save(newAddress)
       const newEmployee = plainToClass(Employee, {
           name: employeeDetails.name,
           password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): '',
           age: employeeDetails.age,
           departmentId: employeeDetails.departmentId,
-          employeeaddressId: adress.id,
+          employeeaddress: newAddress,
           role:employeeDetails.role
            });
       const save = await this.employeerepo.createEmployeesAddress(newEmployee);

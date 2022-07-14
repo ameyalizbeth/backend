@@ -5,7 +5,7 @@ export class UpdateDepartmentDto {
     public id: string;
 
     @IsString()
-    public dept_name: string;
+    public name: string;
 
     
 }

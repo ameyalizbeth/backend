@@ -19,7 +19,7 @@ export class DepartmentService{
     async createDepartment(deptDetails:CreateDepartmentDto){
         try {
             const newdept = plainToClass(Department, {
-                name: deptDetails.dept_name,
+                dept_name: deptDetails.name,
                 
                  });
             const save = await this.departmentrepo.createDepartment(newdept);
@@ -35,7 +35,7 @@ export class DepartmentService{
         try {
             const newdept = plainToClass(Department, {
                 id:deptDetails.id,
-                name: deptDetails.dept_name,
+                dept_name: deptDetails.name,
                 
                  });
                  const result = await this.departmentrepo.getoneDepartment(newdept.id)
