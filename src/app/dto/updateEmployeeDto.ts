@@ -1,19 +1,26 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsNumber, IsOptional, IsString } from "class-validator";
 
 export class UpdateEmployeeDto {
     @IsString()
     public id: string;
     @IsString()
     public name: string;
-
-    @IsNumber()
-    public age:number;
     @IsString()
-    public password:string;
+    public employeeid: string;
     @IsString()
-    public departmentId: string;
+    @IsOptional()
+    public password:string
+    
     @IsString()
-    public employeeaddressId: string;
+    public address:string;
+    @IsString()
+    public experience: string;
+    @IsString()
+    public email: string;
     @IsString()
     public role: string;
+    @IsString()
+    public joiningDate: string;
+    @IsString()
+    public status: string;
 }

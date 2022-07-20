@@ -10,7 +10,7 @@ import bcrypt from 'bcrypt'
 import UserNotAuthorizedException from "../exception/userNotAuthorizedException";
 import IncorrectUsernameOrPasswordException from "../exception/incorrectUsernameOrPasswoedException";
 import jsonwebtoken from 'jsonwebtoken'
-import { EmployeeAddress } from "../entities/EmployeeAddress";
+
 import { CreateEmployeeDto } from "../dto/createEmployee";
 import { CreateEmployeeAddressDto } from "../dto/createEmployeeAddressdto";
 import { UpdateEmployeeDto } from "../dto/updateEmployeeDto";
@@ -64,9 +64,13 @@ public async createEmployees(employeeDetails: CreateEmployeeDto) {
         const newEmployee = plainToClass(Employee, {
             name: employeeDetails.name,
             password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): '',
-            age: employeeDetails.age,
-            departmentId: employeeDetails.departmentId,
-            employeeaddressId: employeeDetails.employeeaddressId
+            employeeid:employeeDetails.employeeid,
+            address:employeeDetails.address,
+            email:employeeDetails.email,
+            role:employeeDetails.role,
+            status:employeeDetails.status,
+            joiningDate:employeeDetails.joiningDate,
+            experience:employeeDetails.experience
              });
         const save = await this.employeerepo.createEmployees(newEmployee);
         return save;
@@ -75,28 +79,7 @@ public async createEmployees(employeeDetails: CreateEmployeeDto) {
     }
 }
 
-public async createEmployeesAddress(employeeDetails: CreateEmployeeAddressDto) {
-  try {
-    const newAddress = plainToClass(EmployeeAddress, {
-      state: employeeDetails.state,
-      district:employeeDetails.district
-       });
-      //  const addressrepo = getConnection().getRepository(EmployeeAddress)
-      //  const adress = await addressrepo.save(newAddress)
-      const newEmployee = plainToClass(Employee, {
-          name: employeeDetails.name,
-          password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): '',
-          age: employeeDetails.age,
-          departmentId: employeeDetails.departmentId,
-          employeeaddress: newAddress,
-          role:employeeDetails.role
-           });
-      const save = await this.employeerepo.createEmployeesAddress(newEmployee);
-      return save;
-  } catch (err) {
-      throw new HttpException(400, "Failed to create employee","unauthorized");
-  }
-}
+
     async getOneById(id: string){
         const result = await this.employeerepo.getOneById(id);
         if(!result){
@@ -109,11 +92,15 @@ public async createEmployeesAddress(employeeDetails: CreateEmployeeAddressDto) {
       try {
         const newEmployee = plainToClass(Employee, {
           id:employeeDetails.id,
-            name: employeeDetails.name,
+          name: employeeDetails.name,
             password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): '',
-            age: employeeDetails.age,
-            departmentId: employeeDetails.departmentId,
-            employeeaddressId: employeeDetails.employeeaddressId
+            employeeid:employeeDetails.employeeid,
+            address:employeeDetails.address,
+            email:employeeDetails.email,
+            role:employeeDetails.role,
+            status:employeeDetails.status,
+            joiningDate:employeeDetails.joiningDate,
+            experience:employeeDetails.experience
              });
             const result = await this.employeerepo.getOneById(newEmployee.id);
              if(!result){

@@ -17,12 +17,12 @@ class EmployeeController extends AbstractController {
   }
   protected initializeRoutes() {
    
-    this.router.get(`${this.path}/:id`, authorize(Object.values(Roles)),this.getOneById)
-    this.router.get(`${this.path}`,authorize(Object.values(Roles)),this.getAllEmployees)
-    this.router.post(`${this.path}`,authorize([Roles.ADMIN,Roles.HR]),validationMiddleware(CreateEmployeeDto,APP_CONSTANTS.body), this.createEmployees)
-    this.router.post(`${this.path}/address`,authorize([Roles.ADMIN,Roles.HR]),validationMiddleware(CreateEmployeeAddressDto,APP_CONSTANTS.body), this.createEmployeesAddress)
-    this.router.put(`${this.path}`, authorize([Roles.ADMIN,Roles.HR]),validationMiddleware(UpdateEmployeeDto,APP_CONSTANTS.body),this.updateOneById)
-    this.router.delete(`${this.path}/:id`, authorize([Roles.ADMIN,Roles.HR]),this.removeOneById)
+    this.router.get(`${this.path}/:id`,this.getOneById)
+    this.router.get(`${this.path}`,this.getAllEmployees)
+    this.router.post(`${this.path}`,validationMiddleware(CreateEmployeeDto,APP_CONSTANTS.body) ,this.createEmployees)
+    // this.router.post(`${this.path}/address`,authorize([Roles.ADMIN,Roles.HR]),validationMiddleware(CreateEmployeeAddressDto,APP_CONSTANTS.body), this.createEmployeesAddress)
+    this.router.put(`${this.path}`,validationMiddleware(UpdateEmployeeDto,APP_CONSTANTS.body), this.updateOneById)
+    this.router.delete(`${this.path}/:id`,this.removeOneById)
     this.router.post(
       `${this.path}/login`,
       this.login
@@ -68,15 +68,7 @@ class EmployeeController extends AbstractController {
       return next(error);
     }
   }
-  private createEmployeesAddress = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-    try {
-      const data: any = { message: "Employee Controller"};
-      response.status(200);
-      response.send(await this.employeeService.createEmployeesAddress(request.body));
-    } catch (error) {
-      return next(error);
-    }
-  }
+  
   private getOneById = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
       const data: any = { message: "Employee Controller"};

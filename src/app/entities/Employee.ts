@@ -1,8 +1,7 @@
 
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AbstractEntity } from "./Abstract";
-import { Department } from "./Department";
-import { EmployeeAddress } from "./EmployeeAddress";
+
 @Entity("employee")
 export class Employee extends AbstractEntity {
     @PrimaryGeneratedColumn("uuid")
@@ -10,25 +9,22 @@ export class Employee extends AbstractEntity {
 
     @Column({ nullable: false, unique:true})
     public name: string;
+    @Column({ nullable: false, unique:true})
+    public employeeid: string;
 
     @Column({ nullable: false })
-    public age: number;
+    public address: string;
     @Column({ nullable: false })
+    public email: string;
+    @Column({ nullable: true })
     public password: string;
-
-    @ManyToOne(() => Department, { cascade: true })
-    @JoinColumn()
-    public department: Department;
-
     @Column({ nullable: false })
-    public departmentId: string;
+    public joiningDate: string;
     
     @Column({ nullable: true })
     public role: string;
-    @OneToOne(() => EmployeeAddress, { cascade: true })
-    @JoinColumn()
-    public employeeaddress: EmployeeAddress;
-
-    @Column({ nullable: false })
-    public employeeaddressId: string;
+    @Column({ nullable: true })
+    public status: string;
+    @Column({ nullable: true })
+    public experience: string;
 }

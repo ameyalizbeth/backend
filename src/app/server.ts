@@ -16,6 +16,7 @@ process.on("unhandledRejection", (e) => {
     await createConnection(config);
 
   } catch (error) {
+    console.log(error)
     process.exit(1);
   }
   const app = new App(controllers);

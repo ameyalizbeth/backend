@@ -2,7 +2,7 @@ import { plainToClass } from "class-transformer";
 import { getConnection, ObjectLiteral } from "typeorm";
 import { CreateEmployeeDto } from "../dto/createEmployee";
 import { Employee } from "../entities/Employee";
-import { EmployeeAddress } from "../entities/EmployeeAddress";
+
 
 export class EmployeeRespository{
    async getEmployeeByName(name: string) {
@@ -16,7 +16,7 @@ export class EmployeeRespository{
     }
     async getAllEmployees(){
          const employeeRepo = getConnection().getRepository(Employee);
-        return await employeeRepo.find({relations:['department','employeeaddress']});
+        return await employeeRepo.find();
     }
     async createEmployees(emp:Employee){
         
@@ -26,14 +26,7 @@ export class EmployeeRespository{
         
        
    }
-   async createEmployeesAddress(emp:Employee){
-    
-    const employeeRepo = getConnection().getRepository(Employee);
-    return await employeeRepo.save(emp)
    
-    
-   
-}
    async getOneById(id:string){
     const employeeRepo = getConnection().getRepository(Employee);
    
